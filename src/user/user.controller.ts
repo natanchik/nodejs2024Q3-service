@@ -19,19 +19,19 @@ export class UserController {
 
   @Get()
   @HttpCode(HttpStatus.OK)
-  getUsers(): string {
+  getUsers() {
     return this.UserService.getUsers();
   }
 
   @Get(':id')
   @HttpCode(HttpStatus.OK)
-  getUserById(@Param('id') id: string): string {
+  getUserById(@Param('id') id: string) {
     return this.UserService.getUserById(id);
   }
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  CreateUserDto(@Body() CreateUserDto: CreateUserDto): string {
+  CreateUserDto(@Body() CreateUserDto: CreateUserDto) {
     return this.UserService.CreateUserDto(CreateUserDto);
   }
 
@@ -40,13 +40,13 @@ export class UserController {
   UpdatePasswordDto(
     @Body() UpdatePasswordDto: UpdatePasswordDto,
     @Param('id') id: string,
-  ): string {
+  ) {
     return this.UserService.UpdatePasswordDto(UpdatePasswordDto, id);
   }
 
   @Delete(':id')
   @HttpCode(HttpStatus.NO_CONTENT)
-  DeleteUserById(@Param('id') id: string): string {
+  DeleteUserById(@Param('id') id: string) {
     return this.UserService.DeleteUserById(id);
   }
 }
