@@ -7,4 +7,4 @@ export interface User {
   updatedAt: number;
 }
 
-export const usersDB: { [id: string]: User } = {};
+export const users: { [id: string]: User } = {};

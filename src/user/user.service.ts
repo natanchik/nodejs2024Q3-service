@@ -5,20 +5,20 @@ import {
 } from '@nestjs/common';
 import { v4 as uuidv4, validate as uuidValidate } from 'uuid';
 
-import { usersDB } from './users-db';
+import { users } from './users';
 import { CreateUserDto } from './dto/create-user.dto';
-import { UpdatePasswordDto } from './dto/update-user-password.dto';
+import { UpdatePasswordDto } from './dto/update-user.dto';
 
 @Injectable()
 export class UserService {
   getUsers() {
-    return Object.values(usersDB);
+    return Object.values(users);
   }
 
   getUserById(id: string) {
     if (uuidValidate(id)) {
-      if (id in usersDB) {
-        return usersDB[id];
+      if (id in users) {
+        return users[id];
       } else {
         throw new NotFoundException('User is not found');
       }
@@ -30,7 +30,7 @@ export class UserService {
   CreateUserDto(CreateUserDto: CreateUserDto) {
     if ('login' in UpdatePasswordDto && 'password' in UpdatePasswordDto) {
       const id = uuidv4();
-      usersDB[id] = {
+      users[id] = {
         id: id,
         login: CreateUserDto.login,
         password: CreateUserDto.password,
@@ -40,10 +40,10 @@ export class UserService {
       };
       return {
         id: id,
-        login: usersDB[id].login,
+        login: users[id].login,
         version: 1,
-        createdAt: usersDB[id].createdAt,
-        updatedAt: usersDB[id].updatedAt,
+        createdAt: users[id].createdAt,
+        updatedAt: users[id].updatedAt,
       };
     } else {
       throw new BadRequestException('Request is not correct');
@@ -56,18 +56,18 @@ export class UserService {
       'newPassword' in UpdatePasswordDto
     ) {
       if (uuidValidate(id)) {
-        if (id in usersDB) {
-          if ((usersDB[id].password = UpdatePasswordDto.oldPassword)) {
-            usersDB[id].password = UpdatePasswordDto.newPassword;
-            usersDB[id].version = ++usersDB[id].version;
-            usersDB[id].updatedAt = Date.now();
+        if (id in users) {
+          if ((users[id].password = UpdatePasswordDto.oldPassword)) {
+            users[id].password = UpdatePasswordDto.newPassword;
+            users[id].version = ++users[id].version;
+            users[id].updatedAt = Date.now();
           }
           return {
             id: id,
-            login: usersDB[id].login,
-            version: usersDB[id].version,
-            createdAt: usersDB[id].createdAt,
-            updatedAt: usersDB[id].updatedAt,
+            login: users[id].login,
+            version: users[id].version,
+            createdAt: users[id].createdAt,
+            updatedAt: users[id].updatedAt,
           };
         } else {
           throw new NotFoundException('User is not found');
@@ -82,8 +82,8 @@ export class UserService {
 
   DeleteUserById(id: string) {
     if (uuidValidate(id)) {
-      if (id in usersDB) {
-        delete usersDB[id];
+      if (id in users) {
+        delete users[id];
       } else {
         throw new NotFoundException('User is not found');
       }
