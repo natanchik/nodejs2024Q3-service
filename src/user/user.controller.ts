@@ -38,8 +38,8 @@ export class UserController {
   @Put(':id')
   @HttpCode(HttpStatus.OK)
   UpdatePasswordDto(
-    @Body() UpdatePasswordDto: UpdatePasswordDto,
     @Param('id') id: string,
+    @Body() UpdatePasswordDto: UpdatePasswordDto,
   ) {
     return this.UserService.UpdatePasswordDto(UpdatePasswordDto, id);
   }
